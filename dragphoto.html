@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 	<style type="text/css">
 		ul{
+			margin: 0 auto;
 			padding: 0;
 			width: 650px;
 			height: 520px;
@@ -26,6 +27,7 @@ window.onload = function(){
 			var arr = [];
 			var zIndex = 1;
 			var aLi = document.querySelectorAll('li');
+			var aUl = document.querySelector('ul');
 
 			for (var i = 0; i < aLi.length; i++) {
 				arr.push([aLi[i].offsetLeft , aLi[i].offsetTop]);
@@ -45,8 +47,8 @@ window.onload = function(){
 				obj.onmousedown = function(){
 					obj.style.zIndex = zIndex++;
 					document.onmousemove = function(ev){
-						obj.style.left = ev.clientX - obj.offsetWidth/2 +'px';
-						obj.style.top = ev.clientY - obj.offsetHeight/2 +'px';
+						obj.style.left = ev.clientX - obj.offsetWidth/2 - aUl.offsetLeft +'px';
+						obj.style.top = ev.clientY - obj.offsetHeight/2 - aUl.offsetTop +'px';
 						for (var i = 0; i < aLi.length; i++) {
 							aLi[i].style.border = ''
 						}

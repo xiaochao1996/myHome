@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>dragphoto</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		ul{
+			margin: 0 auto;
+			padding: 0;
+			width: 650px;
+			height: 520px;
+			border: 1px solid black;
+			position: relative;
+		}
+		li{
+			list-style: none;
+			float: left;
+			margin: 8px;
+		}
+		img{
+			width: 200px;
+			height: 150px;
+		}
+	</style>
+	<script type="text/javascript">
+window.onload = function(){
+			var arr = [];
+			var zIndex = 1;
+			var aLi = document.querySelectorAll('li');
+
+			for (var i = 0; i < aLi.length; i++) {
+				arr.push([aLi[i].offsetLeft , aLi[i].offsetTop]);
+				
+			}
+			for (var i = 0; i < aLi.length; i++) {
+				aLi[i].style.position = 'absolute';
+				aLi[i].style.left = arr[i][0] + 'px';
+				aLi[i].style.top = arr[i][1] + 'px';
+				aLi[i].style.margin = '8px';
+				aLi[i].abc = i;
+				darg(aLi[i])
+			}
+
+			function darg(obj){
+				
+				obj.onmousedown = function(){
+					obj.style.zIndex = zIndex++;
+					document.onmousemove = function(ev){
+						obj.style.left = ev.clientX - obj.offsetWidth/2 +'px';
+						obj.style.top = ev.clientY - obj.offsetHeight/2 +'px';
+						for (var i = 0; i < aLi.length; i++) {
+							aLi[i].style.border = ''
+						}
+
+						var fc = findc(obj);
+						if (fc) {
+							fc.style.border = '2px solid red';
+						}
+
+					
+
+					}
+					document.onmouseup = function(){
+						document.onmousemove = null;
+						document.onmouseup = null;
+
+						var fc = findc(obj);
+						var tmp = 0;
+
+						if(fc){	
+
+							fc.style.left = arr[obj.abc][0] + 'px';
+							fc.style.top =  arr[obj.abc][1] + 'px';
+
+
+							obj.style.left = arr[fc.abc][0] + 'px';
+							obj.style.top = arr[fc.abc][1] + 'px';
+
+							fc.style.border = '';
+
+							// console.log(fc.abc)
+
+							tmp = obj.abc;
+							obj.abc = fc.abc;
+							fc.abc = tmp;
+
+						}
+					}
+					return false;
+				}
+			}
+
+
+			function findc(obj){
+				var value = 9999;
+				var index = -1;
+				for (var i = 0; i < aLi.length; i++) {
+					
+					if( pz(obj,aLi[i]) && obj != aLi[i] ){
+
+						var lc = gougu(obj,aLi[i]);
+
+						if ( lc < value ) {
+							value = lc;
+							index = i;
+						}
+					}
+				}
+
+				if (index != -1) {
+					return aLi[index];
+				}
+
+
+			}
+
+			function gougu(obj1,obj2){
+				var a = obj1.offsetLeft - obj2.offsetLeft;
+				var b = obj2.offsetTop - obj1.offsetTop;
+				var c = Math.sqrt(a*a+b*b);
+				return c;
+			}
+
+			function pz(obj1,obj2){
+				var T1 = obj1.offsetTop;
+				var R1 = obj1.offsetLeft+obj1.offsetWidth;
+				var B1 = obj1.offsetTop+obj1.offsetHeight;
+				var L1 = obj1.offsetLeft;
+
+				var T2 = obj2.offsetTop;
+				var R2 = obj2.offsetLeft+obj2.offsetWidth;
+				var B2 = obj2.offsetTop+obj2.offsetHeight;
+				var L2 = obj2.offsetLeft;
+
+				if (T1>B2 || L1>R2 || B1<T2 || R1<L2) {
+					return false;
+				}else{
+					return true;
+				}
+		
+			}
+		}
+	</script>
+</head>
+<body>
+	<ul>
+		<li><img src="images/2_01.jpg"></li>
+		<li><img src="images/2_02.gif"></li>
+		<li><img src="images/2_03.gif"></li>
+		<li><img src="images/2_04.gif"></li>
+		<li><img src="images/2_05.gif"></li>
+		<li><img src="images/2_06.gif"></li>
+		<li><img src="images/2_07.gif"></li>
+		<li><img src="images/2_08.gif"></li>
+		<li><img src="images/2_09.gif"></li>
+	</ul>
+</body>
+</html>
